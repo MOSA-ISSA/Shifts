@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Modal, Text, View } from 'react-native';
 
-const TheModal = (props) => {
+const TheModal = ({children,animationType,transparent,setModalVisible}) => {
       return (
           <Modal
-            animationType={props.animationType?props.animationType:"fade"}
-            transparent={props.transparent?props.transparent:true}
-            visible={props.setModalVisible}
+            animationType={animationType?animationType:"fade"}
+            transparent={transparent?transparent:true}
+            visible={setModalVisible}
           > 
-            {props.children}
+            {children}
 
           </Modal>
       );

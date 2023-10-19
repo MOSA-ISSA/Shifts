@@ -1,70 +1,72 @@
-import React, { useRef } from 'react';
-import { Animated, Dimensions, StyleSheet, Text, View, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const HEADER_MAX_HEIGHT = 200;
-const HEADER_MIN_HEIGHT = 70;
-
-const CollapsingHeader = () => {
-  const scrollPosition = useRef(new Animated.Value(0)).current;
-
-  const headerHeight = scrollPosition.interpolate({
-    inputRange: [0, 500],
-    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
-    extrapolate: 'clamp',
-  });
-
-
-
+const HalfCircleWithButtons = () => {
   return (
+    <View style={{flex:1, backgroundColor: '#303030'}}>
+
+    <View style={styles.top}></View>
+
     <View style={styles.container}>
-      <Animated.View style={[styles.header, { height: headerHeight }]}>
-        <Text style={styles.title}>Collapsing Header</Text>
-      </Animated.View>
-      <Animated.ScrollView
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollPosition } } }],
-          { useNativeDriver: false },
-        )}
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}>
-
-        {['a','b','c','a','b','c','a','b','c','a','b','c',].map((item,i)=>(
-            <View key={i} style={styles.V}>
-
-            </View>
-        ))}
-      </Animated.ScrollView>
-
+        <View style={styles.button}></View>
+        <View style={styles.halfCircle}></View>
+        <View style={styles.button}></View>
     </View>
+
+   </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    backgroundColor: '#6a5acd',
+    // alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'row',
+    // position: 'relative',
   },
-  title: {
-    fontSize: 24,
-    color: '#fff',
+  halfCircle: {
+    width: '70%',
+    height: 20,
+    backgroundColor: '#199199',
+    borderBottomLeftRadius: 100,
+    borderBottomRightRadius: 100,
+    // borderEndWidth:50,
+    // borderStartWidth:50,
   },
-  scrollView: {
-    flexGrow: 1,
-    backgroundColor: '#fff',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+  button: {
+    height: 50,
+    width: 50,
+    backgroundColor: 'lightblue',
+    padding: 10,
+    margin: 5,
+    borderRadius:100,
   },
-  V:{
-    height: 200,
-    width: 200,
-    padding:10,
-    margin:10,
-    backgroundColor:"#252525"
-  }
+  top:{
+    // borderEndWidth:50,
+    // borderStartWidth:50,
+    width:'100%',
+    height:100,
+    backgroundColor:'#199199',
+    borderBottomEndRadius:50,
+    borderBottomStartRadius:50,
+  },
+  Right: {
+    // right: 0,
+    zIndex: 1,
+  },
+  triangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderLeftWidth: 50,
+    borderRightWidth: 50,
+    borderBottomWidth: 100,
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'blue',
+  },
 });
 
-export default CollapsingHeader;
+export default HalfCircleWithButtons;

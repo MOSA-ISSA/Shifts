@@ -18,11 +18,11 @@ const App =()=>{
 
     return(
       <TheProvider>
-      <TheContext.Consumer>
-      {context => (
-        <Nav/>
-      )}
-      </TheContext.Consumer>
+        <TheContext.Consumer>
+          {context => (
+              <Nav/>
+          )}
+        </TheContext.Consumer>
     </TheProvider>
     )
   }

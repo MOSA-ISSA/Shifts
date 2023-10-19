@@ -5,6 +5,8 @@ import TheContext from '../../Storge/thisContext';
 import ADD from '../asets/animations/ADD';
 import CollapsingHeader from '../component/CollapsingHedWithData/CollapsingHeader';
 import CustomCollapsingHeader from '../component/CollapsingHeader';
+import TheButton from '../component/TheButton';
+import TheModal from '../component/TheModal';
 
 
 
@@ -12,12 +14,22 @@ const MainScreen =({ navigation })=>{
   // AsyncStorage.clear();
   const {ShiftInfo,} = useContext(TheContext)
   const [dateTime, setDateTime] = useState('');
+  const [modalVisible, setmodalVisible] = useState(false);
   const [shift, setShift]= useState(ShiftInfo.in.length!=ShiftInfo.out.length?true:false);
   const now = new Date();
-
-
+  const date = ShiftInfo.dayDate.toString()+'/'+ShiftInfo.month.toString()+'/'+ShiftInfo.year.toString()
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const currentMonth = monthNames[now.getMonth()];
+  const currentDay = dayNames[now.getDay()];
   console.log(ShiftInfo);
-  console.log(ShiftInfo.dayDate.toString()+'/'+ShiftInfo.month.toString()+'/'+ShiftInfo.year.toString())
+  console.log(date)
+  console.log(currentDay);
+  console.log(currentMonth);
+
 
 {
 // const year = now.getFullYear();  // e.g. 2023
@@ -28,15 +40,6 @@ const MainScreen =({ navigation })=>{
 //console.log(ShiftInfo.dayDate.toString()+'/'+ShiftInfo.month.toString()+'/'+ShiftInfo.year.toString())
 }
 
-// const CollapsingHeader=({headerHeight})=>{
-//   return(
-//     <Animated.View style={[styles.header, { height: headerHeight }]}>
-//           <Text style={styles.title}>Collapsing Header</Text>
-//     </Animated.View>
-//   )
-  
-
-// }
 
 const getdata =async()=>{
   //let date = (((now.getMonth()+1).toString())+'/'+now.getFullYear().toString())
@@ -81,15 +84,15 @@ const getdata =async()=>{
     }
   };
 
-const alerstShift = () =>
-  Alert.alert(shift?'do you whant to end shift':'do you whant to start shift' , '', [
-    {
-      text: 'Cancel',
-      onPress: () => console.log('Cancel Pressed'),
-      style: 'cancel',
-    },
-    {text: 'OK', onPress: () => {handlePress()}},
-]);
+  const alerstShift = () =>
+    Alert.alert(shift?'do you whant to end shift':'do you whant to start shift' , '', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => {handlePress()}},
+  ]);
 
 const ShiftBox = () =>{
 
@@ -148,39 +151,44 @@ const AttendanceBox = () =>{
   
   
   
-
+const data=['ten bis','teaching'];
 
   return(
     <View style={styles.container}>
 
       <CollapsingHeader
         headerStyles={styles.headerStyles}
-        customHeaderComponent={1}
-        CustomHeaderComponent={()=>
-          <CustomCollapsingHeader/>
-        }
-      />
+        // enableCustomHeader={1}
+        // CustomHeaderComponent={()=>
+        //   <CustomCollapsingHeader test={'test'}/>
+        // }
+        title={'shifts colliction'}
+        AnimatedText={[date,currentDay,currentMonth,]}
+        data={data}
+        RenderItem={(item)=>{
+          return(
+          <View  style={styles.Box}>
+            <Text>{item}</Text>
+          </View>
+          )}}
+      >
+          <TheButton
+          buttonName={'+'}
+          buttonStyle={{
+            backgroundColor:'#199199',
+          }}
+          onPress={()=>{setmodalVisible(!modalVisible)}}
+          />
+        
+      </CollapsingHeader>
       
-      
+      <TheModal setModalVisible={modalVisible}>
+        {/* <ShiftBox/> */}
+        
+      </TheModal>
 
-
-      {/* <Animated.ScrollView
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollPosition } } }],
-          { useNativeDriver: false },
-        )}
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}>
-
-          {['a','b','c','a','b','c','a','b','c','a','b','c',].map((item,i)=>(
-            <View key={i} style={styles.V}>
-
-            </View>
-        ))}
-
-
-        <ShiftBox/>
-      <AttendanceBox/>
+         {/* <ShiftBox/> */}
+     {/* <AttendanceBox/>
 
       <View style={[styles.Box,{flex:0.5}]}>
         <View style ={styles.centerContainer}>
@@ -193,9 +201,9 @@ const AttendanceBox = () =>{
           </View>
 
         
-      </View>
+      </View> */}
 
-      </Animated.ScrollView> */}
+
 
       {/* <ADD/> */}
 
@@ -273,6 +281,7 @@ const styles = StyleSheet.create({
     borderRadius:10,
   },
   headerStyles:{
+
     backgroundColor:'#262e3b',//same
     borderBottomLeftRadius:50,
     borderBottomRightRadius:50,
@@ -284,6 +293,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   
 });
