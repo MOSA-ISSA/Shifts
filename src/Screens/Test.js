@@ -12,6 +12,7 @@ const duration = 5;
 const App = () => {
   const currentDateTime = new Date();
   const [schedule, setSchedule] = useState([]);
+  const [ShiftState, setShiftState] = useState('start shift');//[start shift, end shift]
 
   const addShiftToSchedule = () => {
     const startShift = //time
@@ -29,7 +30,8 @@ const App = () => {
     };
     
     // Update the state with the new shift data
-    setSchedule((prevSchedule) => [...prevSchedule, shiftData]);
+    schedule.push(shiftData)
+    setShiftState('end shift')
     //set remainder // مذكر
   };
 
@@ -46,14 +48,12 @@ const App = () => {
     );
 
     if (durationInMinutes < duration) {
-      alertStart()
+      showAlert()
     } else {
       // Update the end time of the last added shift
-      setSchedule((prevSchedule) => {
-        lastShift.duration= (durationInMinutes/60).toFixed(2)
-        lastShift.end = endShift;
-        return [...prevSchedule];
-      });
+      lastShift.duration= (durationInMinutes/60).toFixed(2)
+      lastShift.end = endShift;
+      setShiftState('start shift');
     }
   };
 
@@ -61,7 +61,7 @@ const App = () => {
     return (end - start) / (1000 * 60);
   }
 
-  const alertStart=()=>(
+  const showAlert=()=>(
     Alert.alert(
         'Invalid Shift End',
         `Shift duration must be at least ${duration} minutes.`,
@@ -85,10 +85,17 @@ const App = () => {
     )
   }
 
+  const handleShiftStateToggle =()=>{
+    if ("start shift"==ShiftState) {
+      addShiftToSchedule()
+    }else{
+      handleEndShift()
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <Button title="Add Shift" onPress={addShiftToSchedule} />
-      <Button title="End Shift" onPress={handleEndShift} />
+      <Button title={ShiftState} onPress={handleShiftStateToggle } />
         <RenderBox/>
 
       <FlatList
