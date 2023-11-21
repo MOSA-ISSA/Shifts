@@ -5,13 +5,13 @@ import {View, StyleSheet} from 'react-native';
 const ADD =props=>{
 
     return (
-        <View style={{height: 50,width: 50,padding:0,margin:0,}}>
+        <View style={{height: props.size*1.5,width: props.size*1.5,padding:0,margin:0,}}>
             <LottieView 
             speed={0.5}
             source={require('./ADD.json')}
             autoPlay
             loop={true}
-            resizeMode={'center'}
+            resizeMode={'cover'}
             
             //onAnimationLoop={restorData()}
             //onLayout={restorData}

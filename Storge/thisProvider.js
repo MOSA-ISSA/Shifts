@@ -29,9 +29,27 @@ const TheProvider = props => {
 
   //const [admin,setAdmin]= useState(0)
 
+  const [ShiftColiction,setShiftColiction] = useState([
+    // shift
+    {
+      title:'test',
+      ShiftInfo:[
+        {
+          _date: "2023-11-21T02:35:24.427Z",
+          date: "11/21/2023",
+          duration: "0.10",
+          end: "4:41",
+          start: "4:35"
+        }
+      ]
+    }
+  ])
+
   return (
     <TheContext.Provider
       value={{
+        ShiftColiction,
+        setShiftColiction,
         ShiftInfo,
         setShiftInfo,
         Attendance,

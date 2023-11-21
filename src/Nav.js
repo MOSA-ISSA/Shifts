@@ -1,13 +1,13 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MainScreen from './MainScreen';
-import DetailScreen from './DetailScreen';
-import HomeAttendance from './HomeAttendance';
-import TheClass from './TheClass';
-import Schedule from './Schedule';
-import StartLoading from '../asets/animations/StartLoading';
-import Test from './Test';
+import MainScreen from './Screens/MainScreen';
+import DetailScreen from './Screens/DetailScreen';
+import HomeAttendance from './Screens/HomeAttendance';
+import TheClass from './Screens/TheClass';
+import Schedule from './Screens/Schedule';
+import StartLoading from './asets/animations/StartLoading';
+import Test from './Screens/Test';
 
 
 const Stack = createNativeStackNavigator();
@@ -16,7 +16,7 @@ const Nav = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator screenOptions={{}}>
-        {/* <Stack.Screen name="Test" component={Test} options={{headerShown:false}}/> */}
+        <Stack.Screen name="Test" component={Test} options={{headerShown:false}}/>
         <Stack.Screen name="StartLoading" component={StartLoading} options={{headerShown:false}}/>
         <Stack.Screen name="MainScreen" component={MainScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Details" component={DetailScreen} />

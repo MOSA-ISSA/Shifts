@@ -1,13 +1,15 @@
 import React from "react"
 import { View, Text, TouchableOpacity, } from 'react-native';
 
-const TheButton = ({buttonName,buttonNameStyle,onPress,buttonStyle,}) => {// need improve
+const TheButton = ({buttonName,buttonNameStyle,onPress,buttonStyle,children}) => {// need improve
 
     return(
         <TouchableOpacity style={[{alignItems: 'center',justifyContent:"center"},buttonStyle]} onPress={onPress}>
-                <Text style={[{fontSize:15,color:'#fff'},buttonNameStyle]} >
-                                    {buttonName}
-                </Text>
+                {children?children:
+                    <Text style={[{fontSize:15,color:'#fff'},buttonNameStyle]} >
+                        {buttonName}
+                    </Text>
+                }
         </TouchableOpacity>
     )
 }

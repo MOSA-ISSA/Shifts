@@ -1,72 +1,131 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, FlatList, StyleSheet, Alert } from 'react-native';
+import { globalHW } from '../../Storge/global';
 
-const HalfCircleWithButtons = () => {
+const h = globalHW.windowHeight;
+const w = globalHW.windowWidth;
+const hBox = h/15;
+const wBox = w/4-3;
+const fontSize = hBox/2.8;
+const duration = 5;
+
+const App = () => {
+  const currentDateTime = new Date();
+  const [schedule, setSchedule] = useState([]);
+
+  const addShiftToSchedule = () => {
+    const startShift = //time
+     `${currentDateTime.getHours()}:`+
+     `${currentDateTime.getMinutes()}`;
+     //currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const date = currentDateTime.toLocaleDateString();
+
+    const shiftData = {
+      _date:currentDateTime,
+      date: date,
+      start: startShift,
+      end:'-',
+      duration:'-'
+    };
+    
+    // Update the state with the new shift data
+    setSchedule((prevSchedule) => [...prevSchedule, shiftData]);
+    //set remainder // مذكر
+  };
+
+  const handleEndShift = () => {
+    if (schedule.length <= 0) {return}
+    const endShift = //time
+    `${currentDateTime.getHours()}:`+
+    `${currentDateTime.getMinutes()}`;
+
+    const lastShift = schedule[schedule.length-1];
+
+    const durationInMinutes  = getDurationInMinutes(
+      {start:lastShift['_date'],end:currentDateTime}
+    );
+
+    if (durationInMinutes < duration) {
+      alertStart()
+    } else {
+      // Update the end time of the last added shift
+      setSchedule((prevSchedule) => {
+        lastShift.duration= (durationInMinutes/60).toFixed(2)
+        lastShift.end = endShift;
+        return [...prevSchedule];
+      });
+    }
+  };
+
+  const getDurationInMinutes = ({start,end}) =>{
+    return (end - start) / (1000 * 60);
+  }
+
+  const alertStart=()=>(
+    Alert.alert(
+        'Invalid Shift End',
+        `Shift duration must be at least ${duration} minutes.`,
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') },
+          { text: 'cancel shift', onPress: () =>{schedule.pop(),setSchedule([...schedule])}}
+        ],
+      )
+  )
+  
+  const RenderBox =({shift})=>{
+    const scheduleOption=['date','start','end','duration']
+    console.log(shift);
+    return(
+      <View style={styles.hedSchedule} >
+        {scheduleOption.map((item,i)=>(
+        <View key={i} style={styles.boxSchedule}>
+          <Text style={styles.scheduleOption}>{shift?.[item]||item}</Text>
+        </View>
+      ))}
+      </View>
+    )
+  }
+
   return (
-    <View style={{flex:1, backgroundColor: '#303030'}}>
-
-    <View style={styles.top}></View>
-
     <View style={styles.container}>
-        <View style={styles.button}></View>
-        <View style={styles.halfCircle}></View>
-        <View style={styles.button}></View>
-    </View>
+      <Button title="Add Shift" onPress={addShiftToSchedule} />
+      <Button title="End Shift" onPress={handleEndShift} />
+        <RenderBox/>
 
-   </View>
+      <FlatList
+        data={schedule}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <RenderBox shift={item}/>
+        )}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    // position: 'relative',
+    padding: 6,
   },
-  halfCircle: {
-    width: '70%',
-    height: 20,
-    backgroundColor: '#199199',
-    borderBottomLeftRadius: 100,
-    borderBottomRightRadius: 100,
-    // borderEndWidth:50,
-    // borderStartWidth:50,
+  hedSchedule:{
+    flexDirection:'row',
+    backgroundColor:'#4545',
   },
-  button: {
-    height: 50,
-    width: 50,
-    backgroundColor: 'lightblue',
-    padding: 10,
-    margin: 5,
-    borderRadius:100,
+  scheduleOption:{
+    fontSize: fontSize,
+    fontWeight:'bold',
+    color:'black',
+    textAlign:'center',
+    alignSelf:"stretch",
   },
-  top:{
-    // borderEndWidth:50,
-    // borderStartWidth:50,
-    width:'100%',
-    height:100,
-    backgroundColor:'#199199',
-    borderBottomEndRadius:50,
-    borderBottomStartRadius:50,
-  },
-  Right: {
-    // right: 0,
-    zIndex: 1,
-  },
-  triangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderLeftWidth: 50,
-    borderRightWidth: 50,
-    borderBottomWidth: 100,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: 'blue',
-  },
+  boxSchedule:{
+    height: hBox,
+    width: wBox,
+    borderWidth:2,
+    justifyContent:'center',
+    alignItems:'center'
+  }
+
 });
 
-export default HalfCircleWithButtons;
+export default App;

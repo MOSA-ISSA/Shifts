@@ -7,6 +7,7 @@ import CollapsingHeader from '../component/CollapsingHedWithData/CollapsingHeade
 import CustomCollapsingHeader from '../component/CollapsingHeader';
 import TheButton from '../component/TheButton';
 import TheModal from '../component/TheModal';
+import { globalHW } from '../../Storge/global';
 
 
 
@@ -158,10 +159,10 @@ const data=['ten bis','teaching'];
 
       <CollapsingHeader
         headerStyles={styles.headerStyles}
-        // enableCustomHeader={1}
-        // CustomHeaderComponent={()=>
-        //   <CustomCollapsingHeader test={'test'}/>
-        // }
+        enableCustomHeader={1}
+        CustomHeaderComponent={({AnimatedStyle})=>
+          <CustomCollapsingHeader AnimatedStyle={AnimatedStyle}/>
+        }
         title={'shifts colliction'}
         AnimatedText={[date,currentDay,currentMonth,]}
         data={data}
@@ -172,15 +173,15 @@ const data=['ten bis','teaching'];
           </View>
           )}}
       >
-          <TheButton
-          buttonName={'+'}
-          buttonStyle={{
-            backgroundColor:'#199199',
-          }}
-          onPress={()=>{setmodalVisible(!modalVisible)}}
-          />
-        
       </CollapsingHeader>
+
+      <TheButton
+          // buttonName={'+'}
+          buttonStyle={styles.button}
+          onPress={()=>{setmodalVisible(!modalVisible)}}
+        >
+          <ADD size={globalHW.windowHeight*0.1}/>
+      </TheButton>
       
       <TheModal setModalVisible={modalVisible}>
         {/* <ShiftBox/> */}
@@ -217,7 +218,8 @@ const styles = StyleSheet.create({
     flex: 1,
     // padding:10,
     // margin:5,
-    backgroundColor:'#d1d1d1'
+    backgroundColor:'#d1d1d1',
+    flexDirection:'column-reverse'
   },
   centerContainer: {
     flex: 1,
@@ -273,7 +275,7 @@ const styles = StyleSheet.create({
     color:'black'
   },
   Box:{
-    flex:1,
+    height: globalHW.windowHeight*0.25,
     backgroundColor:'#262e3b',
     padding:25,
     paddingHorizontal:40,
@@ -281,7 +283,7 @@ const styles = StyleSheet.create({
     borderRadius:10,
   },
   headerStyles:{
-
+    flexDirection:'column-reverse',
     backgroundColor:'#262e3b',//same
     borderBottomLeftRadius:50,
     borderBottomRightRadius:50,
@@ -296,6 +298,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  button:{
+    flex:1,
+    // backgroundColor:'#199199',
+    position: 'absolute',
+    height: globalHW.windowHeight*0.1,
+    width: globalHW.windowHeight*0.1,
+    borderRadius:100, 
+    marginLeft:globalHW.windowWidth*0.8,
+    marginBottom:10,
+    // alignSelf:'flex-end'
+  }
   
 });
 

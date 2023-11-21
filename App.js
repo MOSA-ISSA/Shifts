@@ -9,7 +9,8 @@ import TheContext from './Storge/thisContext';
 import HomeAttendance from './src/Screens/HomeAttendance';
 import TheClass from './src/Screens/TheClass';
 import Schedule from './src/Screens/Schedule';
-import Nav from './src/Screens/Nav';
+import Nav from './src/Nav';
+import {TouchableOpacity, View } from 'react-native';
 
 
 const Stack = createNativeStackNavigator();
@@ -21,6 +22,9 @@ const App =()=>{
         <TheContext.Consumer>
           {context => (
               <Nav/>
+              // <View style ={{flex:1}}>
+              //   <TouchableOpacity style={{height: 100,width: 100,backgroundColor: "red",}}/>
+              // </View>
           )}
         </TheContext.Consumer>
     </TheProvider>
