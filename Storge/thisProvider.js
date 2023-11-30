@@ -35,13 +35,36 @@ const TheProvider = props => {
       title:'test',
       ShiftInfo:[
         {
+          _date: "2023-11-22T18:47:05.744Z", 
+          date: "10/15/2023", 
+          duration: "1", 
+          end: "20:00", 
+          start: "21:00",
+        },
+        {
+          _date: "2023-11-22T18:47:05.744Z", 
+          date: "11/02/2023", 
+          duration: "1", 
+          end: "20:00", 
+          start: "21:00",
+        },
+        {
           _date: "2023-11-21T02:35:24.427Z",
           date: "11/21/2023",
           duration: "0.10",
           end: "4:41",
           start: "4:35"
-        }
+        },
+        {
+          _date: "2023-11-22T18:47:05.744Z", 
+          date: "11/22/2023", 
+          duration: "1", 
+          end: "20:00", 
+          start: "21:00",
+        },
       ]
+      
+
     }
   ])
 

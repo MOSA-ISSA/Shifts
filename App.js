@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainScreen from './src/Screens/MainScreen';
 import DetailScreen from './src/Screens/DetailScreen';
@@ -10,7 +10,8 @@ import HomeAttendance from './src/Screens/HomeAttendance';
 import TheClass from './src/Screens/TheClass';
 import Schedule from './src/Screens/Schedule';
 import Nav from './src/Nav';
-import {TouchableOpacity, View } from 'react-native';
+import {StatusBar, TouchableOpacity, View } from 'react-native';
+import { Provider } from 'react-native-paper';
 
 
 const Stack = createNativeStackNavigator();
@@ -21,7 +22,15 @@ const App =()=>{
       <TheProvider>
         <TheContext.Consumer>
           {context => (
+            <Provider>
+            <ThemeProvider>
+              <StatusBar
+                backgroundColor={'#454545'}
+                barStyle={"dark-content"}
+              />
               <Nav/>
+              </ThemeProvider>
+            </Provider>
               // <View style ={{flex:1}}>
               //   <TouchableOpacity style={{height: 100,width: 100,backgroundColor: "red",}}/>
               // </View>

@@ -7,7 +7,7 @@ import HomeAttendance from './Screens/HomeAttendance';
 import TheClass from './Screens/TheClass';
 import Schedule from './Screens/Schedule';
 import StartLoading from './asets/animations/StartLoading';
-import Test from './Screens/Test';
+import Test from './Screens/ShiftInfo';
 
 
 const Stack = createNativeStackNavigator();
