@@ -1,8 +1,8 @@
 
-export const filterDataByDate=(data,dateFrom,dateTo)=>{
+export const filterDataByDate=(data,dateFrom,dateTo)=>{//"2023-11-20","2023-11-30"
     
-    const start = new Date(dateFrom);
-    const end = new Date(dateTo);
+    const start = new Date(formatDate(dateFrom));
+    const end = new Date(formatDate(dateTo));
     console.log(start.toLocaleDateString());
     console.log(end.toLocaleDateString());
 
@@ -13,11 +13,12 @@ export const filterDataByDate=(data,dateFrom,dateTo)=>{
         const itemDate = new Date(fixDate);
         return itemDate >= start && itemDate <= end;
     });
+    console.log("//////////////////////////////////////////",filteredData);
 
     return filteredData;
 }
 
-const formatDate=(dateString)=> {
+export const formatDate=(dateString)=> {
     // Split the date components
     const [month, day, year] = dateString.split('/');
 

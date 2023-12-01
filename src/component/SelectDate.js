@@ -1,35 +1,21 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Button, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker'
+import { filterDataByDate, formatDate } from '../methods/methods';
 
-const SelectDate=()=>{
-    const currentDateTime=new Date();
-    const startMonth =`${currentDateTime.getMonth()+1}/1/${currentDateTime.getFullYear()}`;
-    
-    const [monthState, setMonthState] = useState('')
-      // `${currentDateTime.getMonth()}/1/${currentDateTime.getFullYear()}`)
-
-    const getLastDayOfMonth = () => {
-      const nextMonth = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth() + 1, 1);
-      const lastDay = new Date(nextMonth - 1);
-      // setDate(lastDay);
-      return lastDay.toLocaleDateString();
-    };
+const SelectDate=({filterDate,setFilterDate})=>{
+    console.log("**********************************",filterDate);
   
-    const endMonth = getLastDayOfMonth();
-
-  
-      const RenderSlectData=()=>{
-        // const [open, setOpen] = useState(false)
+    const RenderSlectData=()=>{
         const [select,setSelect] = useState([
             {
                 state:'from',
-                month:startMonth,
+                month:filterDate.from,
                 modal:false
             },
             {
                 state:'to',
-                month:endMonth,
+                month:filterDate.to,
                 modal:false,
             }
         ]);
@@ -40,6 +26,7 @@ const SelectDate=()=>{
             <TouchableOpacity style={styles.dateBtn} onPress={() => {
                 item.modal=true;
                 setSelect([...select])
+                
             }}>
               <Text style={styles.text}>{item.state} </Text>
               <Text style={[styles.text,{backgroundColor:'#959595'}]}>{item.month}</Text>
@@ -50,9 +37,11 @@ const SelectDate=()=>{
                 modal
                 theme='dark'
                 open={item.modal}
-                date={new Date()}
+                date={new Date(formatDate(filterDate[item.state]))}
                 onConfirm={(date) => {
                     item.month=date.toLocaleDateString()
+                    filterDate[item.state]=date.toLocaleDateString()
+                    setFilterDate({...filterDate})
                     item.modal=false;
                     setSelect([...select])
                 }}
@@ -64,21 +53,20 @@ const SelectDate=()=>{
             </View>
           )
         )
-      }
+    }
   
       return(
-        <>
         <View style={styles.continer}>
           <RenderSlectData/>
         </View>
-        
-        </>
       )
     }
 
     const styles = StyleSheet.create({
         continer:{
-          flexDirection:"row"
+          flexDirection:"row",
+          justifyContent:"center",
+          margin:10,
         },
         dateBtn:{
           borderRadius:10,

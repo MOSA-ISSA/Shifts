@@ -1,10 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Alert,} from 'react-native';
 import { globalHW } from '../../Storge/global';
-import TheProvider from '../../Storge/thisProvider';
 import TheContext from '../../Storge/thisContext';
 import { filterDataByDate } from '../methods/methods';
-import DropDownComponent from '../component/DropDown';
 import SelectDate from '../component/SelectDate';
 
 const h = globalHW.windowHeight;
@@ -12,15 +10,23 @@ const w = globalHW.windowWidth;
 const hBox = h/15;
 const wBox = w/4-3;
 const fontSize = hBox/2.8;
-const duration = 0;
+const duration = 2;
 
 const ShiftInfo = () => {
-  const currentDateTime = new Date();
-  const {ShiftColiction} = useContext(TheContext);
-  const filtered = filterDataByDate(ShiftColiction[0].ShiftInfo,"2023-11-20","2023-11-30")
-  // console.log(filtered);
-  const [schedule, setSchedule] = useState([...filtered]);
+  const currentDateTime = new Date();// import all date methods
+  const {ShiftColiction,setShiftColiction} = useContext(TheContext);
+  const data = ShiftColiction[0].ShiftInfo;
   const [ShiftState, setShiftState] = useState('start shift');//[start shift, end shift]
+  const startMonth =`${currentDateTime.getMonth()+1}/1/${currentDateTime.getFullYear()}`; //*date
+
+  const getLastDayOfMonth = () => { //*date
+    const nextMonth = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth() + 1, 1);
+    const lastDay = new Date(nextMonth - 1);
+    return lastDay.toLocaleDateString();
+  };
+
+  const [filterDate, setFilterDate] = useState({from:startMonth,to:getLastDayOfMonth()});//?
+  const filtered = filterDataByDate(data,filterDate.from,filterDate.to)
 
   const addShiftToSchedule = () => {
     const startShift = //time
@@ -38,18 +44,20 @@ const ShiftInfo = () => {
     };
     
     // Update the state with the new shift data
-    schedule.push(shiftData)
+    // schedule.push(shiftData)
+    ShiftColiction[0].ShiftInfo.push(shiftData)
     setShiftState('end shift')
     //set remainder // مذكر
   };
 
   const handleEndShift = () => {
-    if (schedule.length <= 0) {return}
+    if (data.length <= 0) {return}
+    
     const endShift = //time
     `${currentDateTime.getHours()}:`+
     `${currentDateTime.getMinutes()}`;
 
-    const lastShift = schedule[schedule.length-1];
+    const lastShift = data[data.length-1];
 
     const durationInMinutes  = getDurationInMinutes(
       {start:lastShift['_date'],end:currentDateTime}
@@ -74,7 +82,10 @@ const ShiftInfo = () => {
         'Invalid Shift End',
         `Shift duration must be at least ${duration} minutes.`,
         [{ text: 'OK', onPress: () => console.log('OK Pressed') },
-          { text: 'cancel shift', onPress: () =>{schedule.pop(),setSchedule([...schedule])}}
+          { text: 'cancel shift', onPress: () =>{
+            setShiftState("start shift")
+            data.pop(),setShiftColiction([...ShiftColiction])
+          }}
         ],
       )
   )
@@ -104,15 +115,15 @@ const ShiftInfo = () => {
   return (
     <View style={styles.container}>
 
-      <SelectDate/>
-
-      <DropDownComponent/>      
+      {/* <DropDownComponent/>*/}
+      
+      <SelectDate filterDate={filterDate} setFilterDate={setFilterDate}/>
 
       <Button title={ShiftState} onPress={handleShiftStateToggle } />
         <RenderBox/>
 
       <FlatList
-        data={schedule}
+        data={filtered}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <RenderBox shift={item}/>
@@ -125,7 +136,7 @@ const ShiftInfo = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 6,
+    padding: 5,
   },
   hedSchedule:{
     flexDirection:'row',
