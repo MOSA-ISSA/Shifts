@@ -3,8 +3,8 @@ import React from 'react'
 import ScrollIcon from './ScrollIcon';
 
 const CustomCollapsingHeader = (props) => {
-    console.log(props);
-    const {AnimatedStyle, RangeMaxHeight, RangeMinHeight,inputRangeMin,inputRangeMax,iconSize}=props
+    // console.log(props);
+    const {AnimatedStyle, AnimatedText, RangeMaxHeight, RangeMinHeight,inputRangeMin,inputRangeMax,iconSize,titleStyles,title}=props
 
     const Icon_Size = iconSize||50;
     const Range_MAX_HEIGHT = (RangeMaxHeight||200)-Icon_Size;
@@ -35,9 +35,10 @@ const CustomCollapsingHeader = (props) => {
         <RenderSids text={'☰'}/>
 
         <View style={styles.inSideHeader}>
-            <Animated.Text style={{fontSize:AnimatedStyle.fontSize ,}}>8</Animated.Text>
-            <Animated.Text style={{fontSize:AnimatedStyle.fontSize ,}}>8</Animated.Text>
-            <Animated.Text style={{fontSize:AnimatedStyle.fontSize ,}}>8</Animated.Text>
+            <Text style={[titleStyles||styles.title,]}>{title||"Collapsing Header"}</Text>
+            {AnimatedText?.map((item,i)=>
+                <Animated.Text key={i} style={[styles.text,{fontSize: AnimatedStyle.fontSize, marginBottom:AnimatedStyle.marginB, }]}>{item||''}</Animated.Text>
+            )}
         </View>
 
         <RenderSids text={'⚙'}/>
@@ -70,9 +71,15 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
     },
-    icon:{
-        fontSize:25,
-        fontWeight:'bold',
-        color:'black'
-    }
+    text:{
+        backgroundColor:'#fff',
+        borderRadius:5,
+        width: '80%',
+        textAlign:'center',
+        color:"#000",
+    },
+    title: {
+        fontSize: 25,
+        color: '#fff',
+    },
 })

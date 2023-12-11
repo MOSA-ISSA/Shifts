@@ -1,17 +1,12 @@
 import React from 'react';
-import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
+import {ThemeProvider} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MainScreen from './src/Screens/MainScreen';
-import DetailScreen from './src/Screens/DetailScreen';
-import StartLoading from './src/asets/animations/StartLoading';
 import TheProvider from './Storge/thisProvider';
 import TheContext from './Storge/thisContext';
-import HomeAttendance from './src/Screens/HomeAttendance';
-import TheClass from './src/Screens/TheClass';
-import Schedule from './src/Screens/Schedule';
 import Nav from './src/Nav';
 import {StatusBar, TouchableOpacity, View } from 'react-native';
 import { Provider } from 'react-native-paper';
+import StateNotifacation from './src/component/StateNotifacation';
 
 
 const Stack = createNativeStackNavigator();
@@ -29,6 +24,7 @@ const App =()=>{
                 barStyle={"dark-content"}
               />
               <Nav/>
+              {/* <StateNotifacation/> */}
               </ThemeProvider>
             </Provider>
               // <View style ={{flex:1}}>

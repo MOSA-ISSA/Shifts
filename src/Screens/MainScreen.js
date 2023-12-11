@@ -8,17 +8,19 @@ import CustomCollapsingHeader from '../component/CollapsingHeader';
 import TheButton from '../component/TheButton';
 import TheModal from '../component/TheModal';
 import { globalHW } from '../../Storge/global';
+import CustomInputComponent from '../component/AddShift';
+import ShiftBox from '../component/ShiftBox';
 
 
 
 const MainScreen =({ navigation })=>{
+
   // AsyncStorage.clear();
-  const {ShiftInfo,} = useContext(TheContext)
+  const {ShiftInfo,ShiftColiction} = useContext(TheContext)
   const [dateTime, setDateTime] = useState('');
   const [modalVisible, setmodalVisible] = useState(false);
-  const [shift, setShift]= useState(ShiftInfo.in.length!=ShiftInfo.out.length?true:false);
   const now = new Date();
-  const date = ShiftInfo.dayDate.toString()+'/'+ShiftInfo.month.toString()+'/'+ShiftInfo.year.toString()
+  const date = now.toLocaleDateString()
   const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const monthNames = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -26,21 +28,11 @@ const MainScreen =({ navigation })=>{
   ];
   const currentMonth = monthNames[now.getMonth()];
   const currentDay = dayNames[now.getDay()];
-  console.log(ShiftInfo);
-  console.log(date)
-  console.log(currentDay);
-  console.log(currentMonth);
-
-
-{
-// const year = now.getFullYear();  // e.g. 2023
-// const month = now.getMonth();  // 0-based index, so January is 0, February is 1, etc.
-// const date = now.getDate();  // day of the month (1-31)
-// const day = now.getDay();  // 0-based index, so Sunday is 0, Monday is 1, etc.
-
-//console.log(ShiftInfo.dayDate.toString()+'/'+ShiftInfo.month.toString()+'/'+ShiftInfo.year.toString())
-}
-
+  // console.log('data',ShiftColiction.map((item)=>item.title));
+  // console.log(ShiftInfo);
+  // console.log(date)
+  // console.log(currentDay);
+  // console.log(currentMonth);
 
 const getdata =async()=>{
   //let date = (((now.getMonth()+1).toString())+'/'+now.getFullYear().toString())
@@ -56,82 +48,17 @@ const getdata =async()=>{
 };
 // getdata()
 
-  const handlePress = () => {
-    setDateTime(now.toLocaleString());
-    if (!shift) {
-      console.log('in');
-      ShiftInfo.in.push(now.toLocaleString())
-      setShift(true)
-    }
-    if (shift) {
-      console.log('out');
-      ShiftInfo.out.push(now.toLocaleString())
-      setShift(false)
-    }
-    savedata()
-  };
-
-  
-
-  const savedata =async()=>{
-    let date = (ShiftInfo.dayDate.toString()+'/'+ShiftInfo.month.toString()+'/'+ShiftInfo.year.toString())
-    try {
-      await AsyncStorage.setItem(
-        date,
-        JSON.stringify (ShiftInfo)
-      );
-    } catch (error) {
-      // Error saving data
-    }
-  };
-
-  const alerstShift = () =>
-    Alert.alert(shift?'do you whant to end shift':'do you whant to start shift' , '', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => {handlePress()}},
-  ]);
-
-const ShiftBox = () =>{
-
-  const dateIn = (ShiftInfo.in.length>0)?(ShiftInfo.in[ShiftInfo.in.length-1]).split(","):['','']
-  const dateOut =(ShiftInfo.out.length>0)?(ShiftInfo.out[ShiftInfo.out.length-1]).split(","):['','']
-
-  return (
-    
-    <TouchableOpacity style={[styles.Box,{flexDirection:'row'}]} onPress={() => navigation.navigate('Details')}>
-      <View style={[styles.centerContainer,{backgroundColor: '#fff',margin:5,borderRadius:3}]}>
-        <Text style={styles.dateText}>{ShiftInfo.dayDate}</Text>
-        <Text style={styles.dateText}>{ShiftInfo.month}</Text>
-        <Text style={styles.dateText}>{ShiftInfo.year}</Text>
-      </View>
-
-      <View style={{flex:2,flexDirection:'column'}}>
-
-        <View style={styles.InOutContainer}>
-          <Text style={styles.InOut}> In: </Text>
-          
-            <Text style={styles.textInOut}>{dateIn[0]}</Text>
-            <Text style={styles.textInOut}>{dateIn[1]}</Text>
-            
-        </View>
-
-        <View style={styles.InOutContainer}>
-          <Text style={styles.InOut}> out: </Text>
-
-          <Text style={styles.textInOut}>{dateOut[0]}</Text>
-          <Text style={styles.textInOut}>{dateOut[1]}</Text>
-
-        </View>
-
-        </View>
-
-    </TouchableOpacity>
-  );
-}
+const savedata =async()=>{
+  let date = (ShiftInfo.dayDate.toString()+'/'+ShiftInfo.month.toString()+'/'+ShiftInfo.year.toString())
+  try {
+    await AsyncStorage.setItem(
+      date,
+      JSON.stringify (ShiftInfo)
+    );
+  } catch (error) {
+    // Error saving data
+  }
+};
 
 const AttendanceBox = () =>{
 
@@ -151,8 +78,8 @@ const AttendanceBox = () =>{
 }
   
   
+const data=[...ShiftColiction.map((item)=>item.title)];
   
-const data=['ten bis','teaching'];
 
   return(
     <View style={styles.container}>
@@ -161,32 +88,31 @@ const data=['ten bis','teaching'];
         headerStyles={styles.headerStyles}
         enableCustomHeader={1}
         CustomHeaderComponent={({AnimatedStyle})=>
-          <CustomCollapsingHeader AnimatedStyle={AnimatedStyle}/>
+          <CustomCollapsingHeader  AnimatedStyle={AnimatedStyle} AnimatedText={[date,currentDay,currentMonth,]} title={'shifts colliction'}/>
         }
-        title={'shifts colliction'}
-        AnimatedText={[date,currentDay,currentMonth,]}
         data={data}
-        RenderItem={(item)=>{
+        RenderItem={(title)=>{
           return(
-          <View  style={styles.Box}>
-            <Text>{item}</Text>
-          </View>
+            <ShiftBox  index={data.findIndex((element)=>element==title)} title={title}/>
           )}}
       >
       </CollapsingHeader>
 
       <TheButton
-          // buttonName={'+'}
           buttonStyle={styles.button}
           onPress={()=>{setmodalVisible(!modalVisible)}}
         >
           <ADD size={globalHW.windowHeight*0.1}/>
+
+          <TheModal  setModalVisible={modalVisible}>
+            <CustomInputComponent
+              setmodalVisible={setmodalVisible}
+            />
+          </TheModal>
+
       </TheButton>
       
-      <TheModal setModalVisible={modalVisible}>
-        {/* <ShiftBox/> */}
-        
-      </TheModal>
+      
 
          {/* <ShiftBox/> */}
      {/* <AttendanceBox/>
@@ -226,26 +152,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // button: {
-  //   fontSize: 20,
-  //   fontWeight: 'bold',
-  //   padding: 10,
-  //   backgroundColor: '#262e3b',
-  //   color: 'white',
-  //   borderRadius: 5,
-  // },
   dateTimeText: {
     fontSize: 16,
     marginTop: 10,
     color:'#fff'
   },
   shiftButton:{
+    alignSelf:'flex-end',
     height:80,
     width:80,
-    padding:5,
     backgroundColor:'#fff',
     borderRadius:100,
-    borderWidth:2
+    borderWidth:2,
+    marginLeft:10,
   },
   dateText: {
     flexGrow:1,
@@ -277,10 +196,11 @@ const styles = StyleSheet.create({
   Box:{
     height: globalHW.windowHeight*0.25,
     backgroundColor:'#262e3b',
-    padding:25,
-    paddingHorizontal:40,
+    padding:10,
+    // paddingHorizontal:40,
     margin:5,
     borderRadius:10,
+    // justifyContent:'space-around'
   },
   headerStyles:{
     flexDirection:'column-reverse',
@@ -305,10 +225,10 @@ const styles = StyleSheet.create({
     height: globalHW.windowHeight*0.1,
     width: globalHW.windowHeight*0.1,
     borderRadius:100, 
-    marginLeft:globalHW.windowWidth*0.8,
+    marginLeft:globalHW.windowWidth*0.78,
     marginBottom:10,
     // alignSelf:'flex-end'
-  }
+  },
   
 });
 

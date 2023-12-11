@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Button, FlatList, StyleSheet, Alert,} from 'react-native';
-import { globalHW } from '../../Storge/global';
+import { currentDateTime, globalHW } from '../../Storge/global';
 import TheContext from '../../Storge/thisContext';
 import { filterDataByDate } from '../methods/methods';
 import SelectDate from '../component/SelectDate';
@@ -10,34 +10,40 @@ const w = globalHW.windowWidth;
 const hBox = h/15;
 const wBox = w/4-3;
 const fontSize = hBox/2.8;
-const duration = 2;
+const duration = 0;
 
-const ShiftInfo = () => {
-  const currentDateTime = new Date();// import all date methods
+const ShiftInfo = (props) => {
+  const {dataTitle,index}=props.route.params;
+  const currentDate = currentDateTime;// import all date methods
   const {ShiftColiction,setShiftColiction} = useContext(TheContext);
-  const data = ShiftColiction[0].ShiftInfo;
-  const [ShiftState, setShiftState] = useState('start shift');//[start shift, end shift]
-  const startMonth =`${currentDateTime.getMonth()+1}/1/${currentDateTime.getFullYear()}`; //*date
+  const currentShiftInfo = ShiftColiction?.[index]?.ShiftInfo
+  const lastIndex = currentShiftInfo.length-1
+  const lastShift = currentShiftInfo[lastIndex]
+
+  const data = ShiftColiction[index].ShiftInfo;
+   // console.log('the data ',data);
+  const [ShiftState, setShiftState] = useState((lastShift?.end==='-')?'end shift':'start shift');//[start shift, end shift]
+  const startMonth = new Date (currentDate.getFullYear(),currentDate.getMonth())
+  // console.log('startMonth',startMonth.toLocaleDateString());
 
   const getLastDayOfMonth = () => { //*date
-    const nextMonth = new Date(currentDateTime.getFullYear(), currentDateTime.getMonth() + 1, 1);
+    const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
     const lastDay = new Date(nextMonth - 1);
-    return lastDay.toLocaleDateString();
+    return lastDay;
   };
+  // console.log("getLastDayOfMonth",getLastDayOfMonth().toLocaleDateString());
 
   const [filterDate, setFilterDate] = useState({from:startMonth,to:getLastDayOfMonth()});//?
   const filtered = filterDataByDate(data,filterDate.from,filterDate.to)
 
   const addShiftToSchedule = () => {
     const startShift = //time
-     `${currentDateTime.getHours()}:`+
-     `${currentDateTime.getMinutes()}`;
+     `${currentDate.getHours()}:`+
+     `${currentDate.getMinutes()}`;
      //currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const date = currentDateTime.toLocaleDateString();
 
     const shiftData = {
-      _date:currentDateTime,
-      date: date,
+      date:currentDate,
       start: startShift,
       end:'-',
       duration:'-'
@@ -45,8 +51,9 @@ const ShiftInfo = () => {
     
     // Update the state with the new shift data
     // schedule.push(shiftData)
-    ShiftColiction[0].ShiftInfo.push(shiftData)
+    ShiftColiction[index].ShiftInfo.push(shiftData)
     setShiftState('end shift')
+    setShiftColiction([...ShiftColiction])
     //set remainder // مذكر
   };
 
@@ -54,13 +61,13 @@ const ShiftInfo = () => {
     if (data.length <= 0) {return}
     
     const endShift = //time
-    `${currentDateTime.getHours()}:`+
-    `${currentDateTime.getMinutes()}`;
+    `${currentDate.getHours()}:`+
+    `${currentDate.getMinutes()}`;
 
     const lastShift = data[data.length-1];
 
     const durationInMinutes  = getDurationInMinutes(
-      {start:lastShift['_date'],end:currentDateTime}
+      {start:lastShift['date'],end:currentDate}
     );
 
     if (durationInMinutes < duration) {
@@ -92,16 +99,33 @@ const ShiftInfo = () => {
   
   const RenderBox =({shift})=>{
     const scheduleOption=['date','start','end','duration']
-    console.log("test",shift);
+    // console.log("test",shift);
     return(
       <View style={styles.hedSchedule} >
         {scheduleOption.map((item,i)=>(
         <View key={i} style={styles.boxSchedule}>
-          <Text style={styles.scheduleOption}>{shift?.[item]||item}</Text>
+
+          {item=="date"&&shift?.[item]?
+          <Text style={styles.scheduleOption}>
+            {DateToString(shift?.[item]) || item}
+          </Text>:
+          <Text style={styles.scheduleOption}>
+            {shift?.[item] || item}
+          </Text>
+          }
         </View>
       ))}
       </View>
     )
+  }
+
+  const DateToString =(date)=>{
+    try {
+      return new Date(date).toLocaleDateString()
+    } catch (error) {
+      console.log(error.messge);
+      return "err"
+    }
   }
 
   const handleShiftStateToggle =()=>{
@@ -114,7 +138,7 @@ const ShiftInfo = () => {
 
   return (
     <View style={styles.container}>
-
+      <Text style ={{fontSize: 25,color:'#000',textAlign:'center'}}>{dataTitle}</Text>
       {/* <DropDownComponent/>*/}
       
       <SelectDate filterDate={filterDate} setFilterDate={setFilterDate}/>

@@ -35,43 +35,37 @@ const TheProvider = props => {
       title:'test',
       ShiftInfo:[
         {
-          _date: "2023-11-22T18:47:05.744Z", 
-          date: "10/15/2023", 
+          date: "2023-11-22T18:47:05.744Z", 
           duration: "1", 
           end: "20:00", 
           start: "21:00",
         },
         {
-          _date: "2023-11-22T18:47:05.744Z", 
-          date: "11/02/2023", 
+          date: "2023-11-22T18:47:05.744Z", 
           duration: "1", 
           end: "20:00", 
           start: "21:00",
         },
         {
-          _date: "2023-11-21T02:35:24.427Z",
-          date: "11/21/2023",
+          date: "2023-11-21T02:35:24.427Z",
           duration: "0.10",
           end: "4:41",
           start: "4:35"
         },
         {
-          _date: "2023-11-22T18:47:05.744Z", 
-          date: "11/22/2023", 
+          date: "2023-11-22T18:47:05.744Z", 
           duration: "1", 
           end: "20:00", 
           start: "21:00",
         },
         {
-          _date: "2023-12-12T18:47:05.744Z", 
-          date: "12/12/2023", 
+          date: "2023-12-12T18:47:05.744Z", 
           duration: "1", 
           end: "20:00", 
           start: "21:00",
         },
         {
-          _date: "2023-12-22T18:47:05.744Z", 
-          date: "12/22/2023", 
+          date: "2023-12-22T18:47:05.744Z", 
           duration: "1", 
           end: "20:00", 
           start: "21:00",
@@ -79,8 +73,51 @@ const TheProvider = props => {
       ]
       
 
+    },
+    {
+      title:'test2',
+      ShiftInfo:[
+        {
+          date: "2023-11-22T18:47:05.744Z", 
+          duration: "1", 
+          end: "20:00", 
+          start: "21:00",
+        },
+        {
+          date: "2023-11-22T18:47:05.744Z", 
+          duration: "1", 
+          end: "20:00", 
+          start: "21:00",
+        },
+        {
+          date: "2023-11-21T02:35:24.427Z",
+          duration: "0.10",
+          end: "4:41",
+          start: "4:35"
+        },
+        {
+          date: "2023-11-22T18:47:05.744Z", 
+          duration: "1", 
+          end: "21:00", 
+          start: "20:00",
+        },
+        {
+          date: "2023-12-12T18:47:05.744Z", 
+          duration: "2", 
+          end: "22:00", 
+          start: "20:00",
+        },
+        {
+          date: "2023-12-22T18:47:05.744Z", 
+          duration: "2", 
+          end: "22:00", 
+          start: "20:00",
+        },
+      ]
     }
   ])
+
+  const [currentLocation, setCurrentLocation] = useState(null);
 
   return (
     <TheContext.Provider

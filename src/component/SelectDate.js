@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Button, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker'
-import { filterDataByDate, formatDate } from '../methods/methods';
 
 const SelectDate=({filterDate,setFilterDate})=>{
     console.log("**********************************",filterDate);
@@ -10,7 +9,7 @@ const SelectDate=({filterDate,setFilterDate})=>{
         const [select,setSelect] = useState([
             {
                 state:'from',
-                month:filterDate.from,
+                month:filterDate.from,//Obj
                 modal:false
             },
             {
@@ -26,10 +25,9 @@ const SelectDate=({filterDate,setFilterDate})=>{
             <TouchableOpacity style={styles.dateBtn} onPress={() => {
                 item.modal=true;
                 setSelect([...select])
-                
             }}>
               <Text style={styles.text}>{item.state} </Text>
-              <Text style={[styles.text,{backgroundColor:'#959595'}]}>{item.month}</Text>
+              <Text style={[styles.text,{backgroundColor:'#959595'}]}>{item.month.toLocaleDateString()}</Text>
             </TouchableOpacity>
             <DatePicker
                 title={`select date ${item.state}`}
@@ -37,10 +35,11 @@ const SelectDate=({filterDate,setFilterDate})=>{
                 modal
                 theme='dark'
                 open={item.modal}
-                date={new Date(formatDate(filterDate[item.state]))}
+                date={item.month}//
                 onConfirm={(date) => {
-                    item.month=date.toLocaleDateString()
-                    filterDate[item.state]=date.toLocaleDateString()
+                  console.log(date);
+                    item.month=date
+                    filterDate[item.state]= date
                     setFilterDate({...filterDate})
                     item.modal=false;
                     setSelect([...select])

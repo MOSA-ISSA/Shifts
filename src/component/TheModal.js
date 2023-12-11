@@ -8,8 +8,9 @@ const TheModal = ({children,animationType,transparent,setModalVisible}) => {
             transparent={transparent?transparent:true}
             visible={setModalVisible}
           > 
+          <View style={{flex:1,justifyContent:'center',alignItems:'center',}}>
             {children}
-
+          </View>
           </Modal>
       );
 };

@@ -36,28 +36,34 @@ const ScrollIcon = ({Icon}) => {
 
   return (
     <TouchableOpacity onPress={handlePress}>
-      <Animated.View style={[styles.iconContainer]}>
-        <Animated.Text style={[styles.icon,iconStyle]}>{Icon}</Animated.Text>
-      </Animated.View>
+      {/* <Animated.View style={[styles.iconContainer]}> */}
+        <Animated.Text style={[styles.icon, iconStyle]}>{Icon}</Animated.Text>
+      {/* </Animated.View> */}
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   iconContainer: {
-    height:50,
+    height: 50,
     width: 50,
-    alignSelf:'baseline',
-    backgroundColor:'#fff',
-    borderRadius:100,
-    alignItems:'center',
-    justifyContent:'center',
-    borderWidth:2,
+    alignSelf: 'baseline',
+    backgroundColor: '#fff',
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
   },
   icon: {
-    fontSize:25,
-    fontWeight:'bold',
-    color:'black',
+    fontSize: 25,
+    fontWeight: 'bold',
+    color: 'black',
+    // backgroundColor: 'blue',
+    borderRadius: 100,
+    height: 50,
+    width: 50,
+    textAlign: 'center', // Center the text horizontally
+    lineHeight: 50, // Center the text vertically
   },
 });
 

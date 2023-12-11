@@ -136,7 +136,7 @@ const CollapsingHeader = ({
   const RenderHeader=()=>( // export ?
     <Animated.View style={[headerStyles||styles.header, { height: headerHeight }]} onTouchEnd={()=>{scrollToTop()}} {...panResponder.panHandlers}>
             {enableCustomHeader?
-              <CustomHeaderComponent AnimatedStyle={{fontSize: fontSize, height: headerHeight}}/>/*how to do this*/
+              <CustomHeaderComponent AnimatedStyle={{fontSize: fontSize, height: headerHeight, marginB:marginB}}/>/*how to do this*/
               :
               <>
               {AnimatedText?.map((item,i)=>
@@ -171,7 +171,7 @@ const CollapsingHeader = ({
         ref={flatListRef}
         ListHeaderComponent={()=>RenderHeader()}
         stickyHeaderIndices={[0]}
-        data={['a','b','c','a','b','c','a','b','c','a','b','c',]||['a','b','c']}//||['a','b','c','a','b','c','a','b','c','a','b','c',]
+        data={data||['a','b','c']}//||['a','b','c','a','b','c','a','b','c','a','b','c',]
         // keyExtractor={(item) => item.id}
         renderItem={({ item }) => (renderData(item))}
         // onScrollBeginDrag={(e)=>{
