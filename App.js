@@ -1,18 +1,13 @@
 import React from 'react';
 import {ThemeProvider} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TheProvider from './Storge/thisProvider';
 import TheContext from './Storge/thisContext';
 import Nav from './src/Nav';
-import {StatusBar, TouchableOpacity, View } from 'react-native';
+import {StatusBar} from 'react-native';
 import { Provider } from 'react-native-paper';
-import StateNotifacation from './src/component/StateNotifacation';
-
-
-const Stack = createNativeStackNavigator();
 
 const App =()=>{
-
+  console.log("app");
     return(
       <TheProvider>
         <TheContext.Consumer>

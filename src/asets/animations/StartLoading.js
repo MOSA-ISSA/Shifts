@@ -5,11 +5,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TheContext from '../../../Storge/thisContext';
 
 const StartLoading = props => {
-    
+    console.log('StartLoading');
     const {ShiftInfo,setAttendance,setLessons,lessons,Attendance} = useContext(TheContext)
     const [stop, setStop] = useState([0]);
 
-    console.log('StartLoading');
+    
 
     const restorData = async ()=>{
         let key = await AsyncStorage.getAllKeys()
@@ -61,7 +61,7 @@ const StartLoading = props => {
             autoPlay
             loop={false}
             resizeMode={'contain'}
-            onAnimationLoop={restorData()}
+            // onAnimationLoop={restorData()}
             onAnimationFinish={()=>props.navigation.navigate('MainScreen')}// Test
             />
         </View>

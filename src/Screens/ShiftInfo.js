@@ -13,9 +13,9 @@ const fontSize = hBox/2.8;
 const duration = 0;
 
 const ShiftInfo = (props) => {
+  const {ShiftColiction,setShiftColiction} = useContext(TheContext);
   const {dataTitle,index}=props.route.params;
   const currentDate = currentDateTime;// import all date methods
-  const {ShiftColiction,setShiftColiction} = useContext(TheContext);
   const currentShiftInfo = ShiftColiction?.[index]?.ShiftInfo
   const lastIndex = currentShiftInfo.length-1
   const lastShift = currentShiftInfo[lastIndex]
@@ -76,6 +76,7 @@ const ShiftInfo = (props) => {
       // Update the end time of the last added shift
       lastShift.duration= (durationInMinutes/60).toFixed(2)
       lastShift.end = endShift;
+      setShiftColiction([...ShiftColiction])
       setShiftState('start shift');
     }
   };

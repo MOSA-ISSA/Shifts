@@ -14,13 +14,15 @@ import MapTest from './Screens/MapTest';
 const Stack = createNativeStackNavigator();
 
 const Nav = () => {
+  console.log("nav");
   return (
     <NavigationContainer>
         <Stack.Navigator screenOptions={{}}>
+        <Stack.Screen name="Maps" component={MapTest} options={{headerShown:false}}/>
+
         <Stack.Screen name="StartLoading" component={StartLoading} options={{headerShown:false}}/>
         <Stack.Screen name="MainScreen" component={MainScreen} options={{headerShown:false}}/>
         <Stack.Screen name="ShiftInfo" component={ShiftInfo} options={{headerShown:false}}/>
-        <Stack.Screen name="Maps" component={MapTest} options={{headerShown:false}}/>
         <Stack.Screen name="Details" component={DetailScreen} />
         <Stack.Screen name="HomeAttendance" component={HomeAttendance} options={{headerShown:false}}/>
         <Stack.Screen name="TheClass" component={TheClass} options={{headerShown:false}}/>

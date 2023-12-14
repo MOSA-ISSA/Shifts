@@ -5,14 +5,24 @@ import { TextInput, Text } from 'react-native-paper';
 import TheButton from './TheButton';
 import { globalHW } from '../../Storge/global';
 import TheContext from '../../Storge/thisContext';
+import InputComponent from './InputComponent';
 
-const CustomInputComponent = ({ setmodalVisible}) => {
+const AddNewShiftComponent = ({setmodalVisible}) => {
     const {setShiftColiction,ShiftColiction} = useContext(TheContext)
-    const [text, setText] = useState('');
+    const [inputs, setInputs] = useState({
+      'title':'',
+      'min shift length':'',
+      'max shift length':'',
+    });
+    const shiftValue = Object.keys(inputs);
 
     const onDone=()=>{
-        if (text!='') {
-            setShiftColiction([...ShiftColiction,{title:text,ShiftInfo:[]}])
+        if (inputs.title!='') {
+            setShiftColiction([...ShiftColiction,{
+              title:inputs.title,
+              "min shift length":inputs["min shift length"],
+              "max shift length":inputs["max shift length"],
+              ShiftInfo:[]}])
             setmodalVisible(false)
         }else{
             Alert.alert(
@@ -20,6 +30,16 @@ const CustomInputComponent = ({ setmodalVisible}) => {
                 [{text: 'OK'},]
                 )
         }
+    }
+
+    const RenderInputs=()=>{
+      return(
+        shiftValue.map((value,i)=>
+        <View key={i} style={{flex:1}}>
+          <InputComponent value={value} setInputs={setInputs} inputs={inputs} shiftValue={shiftValue} i={i}/>
+        </View>
+        )
+      )
     }
 
   return (
@@ -33,14 +53,15 @@ const CustomInputComponent = ({ setmodalVisible}) => {
             />
         </View>
           
+        <RenderInputs/>
       
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="Enter title"
         value={text}
         onChangeText={setText}
         theme={DarkTheme}
-      />
+      /> */}
       <TheButton
             buttonName={'done'}
             onPress={()=>onDone()}
@@ -67,10 +88,6 @@ const styles = StyleSheet.create({
     flex:1
     // alignSelf:'stretch',
   },
-  input: {
-    marginBottom: 10,
-    backgroundColor:'#959595'
-  },
   DoneButton:{
     alignSelf:'center',
     backgroundColor:'#494949',
@@ -87,4 +104,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CustomInputComponent;
+export default AddNewShiftComponent;

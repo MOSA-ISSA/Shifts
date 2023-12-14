@@ -8,13 +8,13 @@ import CustomCollapsingHeader from '../component/CollapsingHeader';
 import TheButton from '../component/TheButton';
 import TheModal from '../component/TheModal';
 import { globalHW } from '../../Storge/global';
-import CustomInputComponent from '../component/AddShift';
+import AddNewShiftComponent from '../component/AddShift';
 import ShiftBox from '../component/ShiftBox';
 
 
 
 const MainScreen =({ navigation })=>{
-
+  console.log("main Screen");
   // AsyncStorage.clear();
   const {ShiftInfo,ShiftColiction} = useContext(TheContext)
   const [dateTime, setDateTime] = useState('');
@@ -105,7 +105,7 @@ const data=[...ShiftColiction.map((item)=>item.title)];
           <ADD size={globalHW.windowHeight*0.1}/>
 
           <TheModal  setModalVisible={modalVisible}>
-            <CustomInputComponent
+            <AddNewShiftComponent
               setmodalVisible={setmodalVisible}
             />
           </TheModal>
